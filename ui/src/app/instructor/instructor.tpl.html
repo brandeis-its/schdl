@@ -1,0 +1,20 @@
+<ul class="breadcrumb">
+<li><a href="{{Routes.School(school.fragment)}}">{{school.name}}</a></li>
+<li class="active">{{instructor.name}}</li>
+</ul>
+<h2>{{instructor.name}}</h2>
+<div ng:repeat="term in instructor.terms">
+    <h4><a href="{{Routes.Term(school.fragment, term.fragment)}}">{{term.name}}</a></h4>
+    <ul>
+        <li ng:repeat="section in term.course_sections">
+            <a href="{{Routes.Course(school.fragment, term.fragment, section.course_fragment)}}">{{section.course_code}}</a><sub>{{section.section}}</sub>: {{section.course_name}}
+        </li>
+        <li ng:if="term.independent_studies">Independent Study:
+            <ul>
+                <li ng:repeat="section in term.independent_studies">
+                    <a href="{{Routes.Course(school.fragment, term.fragment, section.course_fragment)}}">{{section.course_code}}</a><sub>{{section.section}}</sub>: {{section.course_name}}
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>

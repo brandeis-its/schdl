@@ -1,0 +1,6 @@
+A data update for {{ school['hostname'][0] }} has failed during stage
+{{ failed_stage }}. The update was originally submitted at {{
+    update['_id'].generation_time.isoformat() }}.
+
+
+{{error}}

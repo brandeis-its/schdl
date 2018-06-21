@@ -1,0 +1,34 @@
+<div role="form">
+  <div class="modal-header">
+    <h3>Password Reset</h3>
+  </div>
+  <div class="modal-body" stop-event="touchend">
+    <form ng:submit="resetPasswd()" class="form-horizontal" role="form" novalidate>
+      <div ng:show="resetPasswd.failed" ng:switch="resetPasswd.failed" class="alert alert-danger">
+        <div ng:switch:when="404">
+          There is no account with the email address you entered. Please <a ng:click="close(); register()">sign up</a>.
+        </div>
+        <div ng:switch:default>
+          The server encountered an an error while trying to log you in. Please try again.
+        </div>
+      </div>
+      <div ng:show="resetPasswd.success" class="alert alert-success">
+        Check your inbox for an email with directions to finish resetting your password.
+      </div>
+      <div class="form-group" ng:hide="resetPasswd.success">
+        <label for="email" class="col-sm-3 control-label">Email address</label>
+        <div class="col-sm-9">
+          <input id="email" type="email" class="form-control" safe-input="resetPasswd.getEmail" ng:model="resetPasswd.email" placeholder="Email address" autofocus />
+        </div>
+      </div>
+      <input type="submit" style="position: absolute; z-index: -9999">
+    </form>
+  </div>
+  <div class="modal-footer" ng:hide="resetPasswd.success">
+    <button class="btn btn-primary" ng:click="resetPasswd()">Reset Password</button>
+    <button class="btn btn-warning" ng:click="close()">Cancel</button>
+  </div>
+  <div class="modal-footer" ng:show="resetPasswd.success">
+    <button class="btn btn-warning" ng:click="close()">Close</button>
+  </div>
+</div>

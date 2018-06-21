@@ -1,0 +1,61 @@
+<ul class="breadcrumb">
+  <li><a href="{{Routes.School(school.fragment)}}">{{school.name}}</a></li>
+  <li><a href="{{Routes.Term(school.fragment, schedule.term.fragment)}}">{{schedule.term.name}}</a></li>
+  <li class="active" ng:hide="schedule.user.name">My Schedule</li>
+  <li class="active" ng:show="schedule.user.name">{{schedule.user.name}}'s Schedule</li>
+</ul>
+<h1>{{schedule.term.name}}
+  <small ng:show="schedule.user.name"><i class="glyphicon glyphicon-user"></i> {{schedule.user.name}}</small>
+  <button ng:hide="schedule.user.name" class="btn btn-info btn-sm hidden-print" tooltip="{{$window.location.protocol}}//{{$window.location.host}}{{Routes.Schedule(school.fragment, schedule.term.fragment, schedule.secret)}}" tooltip-trigger="click" tooltip-placement="right"><i class="glyphicon glyphicon-share-alt"></i> Share</button>
+</h1>
+<schdl-block-schedule schedule="schedule" school="school"></schdl-block-schedule>
+<h3 ng:show="schedule.course_sections.length == 0">
+  No courses in this schedule yet.
+</h3>
+<div ng:repeat="section in schedule.course_sections | filter:notRuledOut | orderBy:'section'" class="schdl-section">
+  <h4><a href="{{Routes.Course(school.fragment, schedule.term.fragment, section.course_fragment)}}" title="{{section.course_name}}">{{section.course_code}}<sub>{{section.section}}</sub></a>
+    <schdl-user-status signed-in="$storage.user.name" register="register" term="schedule.term.fragment" term-end="schedule.term.end" section="section.fragment" registration-id="section.registration_id" status="section.status"></schdl-user-status>
+  </h4>
+  <schdl-section-status status="section.status" status-text="section.status_text" enrolled="section.enrolled" limit="section.limit" waiting="section.waiting"></schdl-section-status>
+  <div class="schdl-instructors">
+    Instructors: {{ {0: 'TBD'}[section.instructors.length] }}
+    <span ng:repeat="instr in section.instructors"><a href="{{Routes.Instructor(school.fragment, instr.fragment)}}">{{instr.name}}</a>{{ {false: ', '}[$last] }}</span>
+  </div>
+  <div ng:repeat="time in section.times" class="schdl-course-time">
+    <span ng:show="time.type">{{time.type}}: </span>
+    {{ time.days | schdlDays }} {{time.start | schdlTime}} - {{time.end | schdlTime}}
+    <span ng:show="time.building || time.room">@ {{time.building}} {{time.room}}</span>
+  </div>
+  <div ng:show="section.books_url">
+    <a ng:href="{{section.books_url}}"> <i class="glyphicon glyphicon-book"></i> Books</a>
+  </div>
+</div>
+<h3 ng:show="(schedule.course_sections | filter:isRuledOut).length > 0">Ruled Out</h3>
+<div ng:repeat="section in schedule.course_sections | filter:isRuledOut | orderBy:'section'" class="schdl-section">
+  <h4><a href="{{Routes.Course(school.fragment, schedule.term.fragment, section.course_fragment)}}" title="{{section.course_name}}">{{section.course_code}}<sub>{{section.section}}</sub></a>
+    <schdl-user-status signed-in="$storage.user.name" register="register" term="schedule.term.fragment" section="section.fragment" registration-id="section.registration_id"></schdl-user-status>
+  </h4>
+  <schdl-section-status status="section.status" status-text="section.status_text" enrolled="section.enrolled" limit="section.limit" waiting="section.waiting"></schdl-section-status>
+  <div class="schdl-instructors">
+    Instructors: {{ {0: 'TBD'}[section.instructors.length] }}
+    <span ng:repeat="instr in section.instructors"><a href="{{Routes.Instructor(school.fragment, instr.fragment)}}">{{instr.name}}</a>{{ {false: ', '}[$last] }}</span>
+  </div>
+  <div ng:repeat="time in section.times" class="schdl-course-time">
+    <span ng:show="time.type">{{time.type}}: </span>
+    {{ time.days | schdlDays }} {{time.start | schdlTime}} - {{time.end | schdlTime}}
+    <span ng:show="time.building || time.room">@ {{time.building}} {{time.room}}</span>
+  </div>
+  <div ng:show="section.books_url">
+    <a ng:href="{{section.books_url}}"> <i class="glyphicon glyphicon-book"></i> Books</a>
+  </div>
+</div>
+<button ng:hide="schedule.user.name" class="btn btn-default btn-sm hidden-print" tooltip="Export your schedule in iCalendar format for use in Calendar applications such as Google Calendar" tooltip-placement="right" tooltip-popup-delay="500" ng:click="showExportModal()"><i class="glyphicon glyphicon-calendar"></i> Export</button>
+<div ng:show="recommendations.length">
+  <h2>Other courses you might want to consider:</h2>
+  <div ng:repeat="c in recommendations">
+    <a href="{{Routes.Course(school.fragment, schedule.term.fragment, c.fragment)}}">{{c.code}}: {{c.name}}</a>
+  </div>
+</div>
+<p>
+  <a href="{{Routes.Term(school.fragment, schedule.term.fragment)}}">Back to {{schedule.term.name}}</a>
+</p>

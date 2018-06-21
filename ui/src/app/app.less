@@ -1,0 +1,105 @@
+@media print {
+    a[href]:after {
+        content: '' !important;
+    }
+}
+
+.width-auto {
+    width: auto;
+}
+
+.schdl-course-description, .schdl-section-details {
+	white-space: pre-line;
+}
+.schdl-open {
+	color: green;
+}
+.schdl-closed {
+	color: red;
+}
+.schdl-restricted {
+    color: orange;
+}
+.schdl-req {
+	font-size: 80%;
+	color: #5555ff;
+}
+
+.main-footer {
+    background-color: @navbar-default-bg;
+    margin-top: 40px;
+    border-top: 1px solid @navbar-default-border;
+    padding: 20px 0 20px 0;
+    color: @navbar-default-color;
+    text-align: center;
+}
+
+.main-footer p {
+    margin-bottom: 0;
+}
+
+.navbar a, a[ng\:click], a[ng-click] {
+    cursor: pointer;
+}
+
+.navbar-form {
+    @media (min-width: @grid-float-breakpoint) {
+        padding-right: 0;
+    }
+    white-space: nowrap;
+}
+
+.navbar-form .form-control {
+    width: auto !important;
+}
+
+.navbar-form .input-group-btn {
+    @media (min-width: @grid-float-breakpoint) {
+        width: auto !important;
+    }
+}
+
+.navbar-form input.form-control {
+    @media not all and (min-width: @grid-float-breakpoint) {
+        width: 83% !important;
+    }
+}
+
+.navbar .dropdown-menu.ng-isolate-scope {
+    right: 0;
+    left: initial !important;
+}
+
+.navbar .quicksearch-container {
+    width: auto;
+}
+
+form .token {
+    display: inline-block;
+    margin: 3px;
+    margin-right: 7px;
+    padding: 2px;
+    border: 1px solid #000088;
+    border-radius: 5px;
+    background-color: #555555;
+    color: white;
+}
+
+form .token .glyphicon {
+    color: white;
+    cursor: pointer;
+}
+
+form .req {
+    display: inline-block;
+    margin: 3px;
+    margin-right: 7px;
+}
+
+.tooltip-inner, .popover-inner {
+    max-width: none;
+}
+
+.loading, .loading * {
+    cursor: wait !important;
+}

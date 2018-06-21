@@ -1,0 +1,23 @@
+Minimum Viable Product:
+- ToS
+- Build with production Analytics id (localConfig.json) for deployment
+
+Features:
+- Hide mobile nav menu on new pageload or click
+- Email notifications when courses change
+- Add meta description to server-side rendered pages
+- Improve performance by testing for unindexed queries with Mongo's notablescan parameter
+- Add directives for schedule and course section to reuse code
+- Cache GCS authenticated service (make sure it does the right thing when expired)
+- Spec page describing data files (and in-page validator)
+- Fix course pages so there's a subject in the breadcrumbs and a return link at the end (store last-visited subject and use it if possible)
+- Redo schedules using SVG and stop the borders from piling up
+- Generated png schedules from svg (https://github.com/sampumon/SVG.toDataURL)
+- User-added events
+- Use ng-touch for better mobile experience
+- Fix back-button scroll-to-last-position
+- Implement 'snapshot' as a proper type of data update so I can set the limit on the number of terms in a 'full_terms' update to something sane
+
+Bugs:
+- Data update that includes more terms than it claims can cause errors later due to not post-processing terms and subjects in terms that were not listed in ther "terms" field of the update
+- Fix display of quicksearch form for mobile

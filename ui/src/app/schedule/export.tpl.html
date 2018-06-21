@@ -1,0 +1,17 @@
+<div class="modal-header">
+  <h3>Export Schedule</h3>
+</div>
+<div class="modal-body" stop-event="touchend">
+  <p>You can export your schedule in <a href="http://en.wikipedia.org/wiki/ICalendar" target="_blank">iCalendar</a> format. The resulting calendar file will include all courses from all terms that you have marked as 'Officially Enrolled' (or for which you are an instructor).</p>
+  <p>There are a few ways to import your schedule into various calendar applications:<ol>
+    <li><a href="http://www.google.com/calendar/render?cid={{icsUrlHttp}}" target="_blank"><img src="//www.google.com/calendar/images/ext/gc_button6.gif" alt="Add to Google Calendar"></a>
+    <li>Copy the URL below into a web based calendar application (e.g. Yahoo Calendar) or desktop calendar application (e.g. Mac OS X Calendar). You can share this URL with friends, but be aware that anyone with this URL can see any changes you make to your schedule in the future.<br/>
+    <input disabled ng-model="icsUrl" class="form-control">
+    </li>
+    <li><a href="{{icsUrl}}" target="_blank">Download</a> your schedule and upload it to your online calendar app or open it in a
+        desktop calendar app.</li>
+  </ol></p>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-default" ng-click="close()">Close</button>
+</div>

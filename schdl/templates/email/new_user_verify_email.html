@@ -1,0 +1,13 @@
+<!doctype html>
+<html>
+<body>
+Hello, {{ user.name }}. Thank you for creating a
+<a href="https://{{ school.hostname[0] }}">{{ school.name }} Schdl</a> account.
+The email address that you provided is <i>{{ user.email[0] }}</i>.
+
+To finish creating your account and sign in, go to
+<a href="https://{{ school.hostname[0] }}/verify?secret={{ secret }}"
+    >https://{{ school.hostname[0] }}/verify?secret={{ secret }}</a>.
+This link will expire in 30 days.
+</body>
+</html>

@@ -1,0 +1,35 @@
+<ul class="breadcrumb">
+	<li><a href="{{Routes.School(school.fragment)}}">{{school.name}}</a></li>
+	<li class="active">Student Interest</li>
+</ul>
+<h3>Student Interest</h3>
+<p><form ng-submit="get(form.term)" class="form-inline container" role="form">
+  <select class="form-control" ng-model="form.term" ng-options="term.fragment as term.name for term in school.terms"></select>
+  <button class="btn btn-primary form-control">Display</button>
+  <a class="btn btn-primary form-control" target="_blank" ng-href="/api/student_interest/{{school.fragment}}/{{form.term}}.csv">Export as CSV</a>
+</form></p>
+<div ng-show="loading">
+  <h4>Loading...</h4>
+</div>
+<p ng-hide="loading || !data"><input ng-model="filter" placeholder="Filter" class="form-control" /></p>
+<div ng-hide="loading || !data" class="table-responsive">
+  <table class="table table-condensed table-hover">
+    <tr>
+      <th><a ng-click="setOrder(['course_code', 'section'])">Section</a></th>
+      <th><a ng-click="setOrder('maybe')">Interested</a></th>
+      <th><a ng-click="setOrder('definitely')">Decided to Take</a></th>
+      <th><a ng-click="setOrder('official')">Officially Enrolled</a></th>
+      <th><a ng-click="setOrder('total')">Total Interest</a></th>
+      <th><a ng-click="setOrder('no')">Decided Against</a></th>
+    </tr>
+    <tr ng-repeat="row in data |filter:filter | orderBy:sort:reverse track by row.id">
+      <td title="{{::row.course_name}}"><a ng-href="{{::Routes.Course(school.fragment, form.term, row.course_fragment)}}"><span ng-bind="::row.course_code"></span><small ng-bind="::row.section"></small></a></td>
+      <td ng-bind="::row.maybe"></td>
+      <td ng-bind="::row.definitely"></td>
+      <td ng-bind="::row.official"></td>
+      <td ng-bind="::row.total"></td>
+      <td ng-bind="::row.no"></td>
+    </tr>
+  </table>
+</div>
+<a href="/">Home</a>

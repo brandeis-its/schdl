@@ -1,0 +1,1 @@
+coverage run --omit='*/test_*' --source schdl schdl/test_all.py && ( coverage html --fail-under=95 ; google-chrome htmlcov/index.html )

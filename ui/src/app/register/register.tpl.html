@@ -1,0 +1,72 @@
+<div role="form">
+  <div class="modal-header">
+    <h3>Sign Up</h3>
+  </div>
+  <div class="modal-body" stop-event="touchend">
+    <div ng:show="register.failed" ng:switch="register.failed" class="alert alert-danger">
+    <div ng:switch:when="passmatch">
+        Passwords do not match.
+    </div>
+    <div ng:switch:when="nopassword">
+        You must choose a password.
+    </div>
+    <div ng:switch:when="noemail">
+        A valid email address is required.
+    </div>
+    <div ng:switch:when="noname">
+        You must enter a name.
+    </div>
+    <div ng:switch:when="409">
+        An account already exists with that email address. Try <a ng:click="close(); login()">logging in</a>.
+    </div>
+    <div ng:switch:default>
+        An error occurred while creating your account. Please try again.
+    </div>
+    </div>
+    <div ng:show="register.success" class="alert alert-success">
+    <strong>Registration complete!</strong> Please check your inbox for a message with instructions to verify your email address and sign in.
+    </div>
+    <form ng:submit="register()" class="form-horizontal" role="form" ng:hide="register.success">
+      <div class="alert alert-info"><strong>Already have an account?</strong> <a ng:click="close(); login()">Sign in!</a></div>
+      <div class="form-group">
+        <label for="first" class="col-sm-3 control-label">First Name</label>
+        <div class="col-sm-9">
+          <input id="first" type="text" class="form-control" safe-input="register.getFirst" ng:model="register.first" placeholder="First Name" autofocus />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="last" class="col-sm-3 control-label">Last Name</label>
+        <div class="col-sm-9">
+          <input id="last" type="text" class="form-control" safe-input="register.getLast" ng:model="register.last" placeholder="Last Name" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email" class="col-sm-3 control-label">Email Address</label>
+        <div class="col-sm-9">
+          <input id="email" type="email" class="form-control" safe-input="register.getEmail" ng:model="register.email" placeholder="Email Address" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="password" class="col-sm-3 control-label">Password</label>
+        <div class="col-sm-9">
+          <input id="password" type="password" class="form-control" safe-input="register.getPassword" ng:model="register.password" placeholder="Password" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="password2" class="col-sm-3 control-label">Repeat Password</label>
+        <div class="col-sm-9">
+          <input id="password2" type="password" class="form-control" safe-input="register.getPassword2" ng:model="register.password2" placeholder="Repeat Password" />
+        </div>
+      </div>
+      <input type="submit" style="position: absolute; z-index: -9999">
+    </form>
+  </div>
+  <div class="modal-footer" ng:hide="register.success">
+    <p><small>By creating an account, you agree to the <a href="/terms" ng:click="close()">Terms of Service</a> and the <a href="/privacy" ng:click="close()">Privacy Policy</a>.</small></p>
+    <button class="btn btn-primary" ng:click="register()">Sign Up</button>
+    <button class="btn btn-warning" ng:click="close()">Cancel</button>
+  </div>
+  <div class="modal-footer" ng:show="register.success">
+    <button class="btn btn-primary" ng:click="close()">Close</button>
+  </div>
+</div>

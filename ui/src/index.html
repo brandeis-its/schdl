@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en" ng-app="schdl">
+  <head>
+    <base href="/">
+    <meta charset="utf-8">
+    <meta name="fragment" content="!">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+
+    <!-- compiled CSS --><% styles.forEach( function ( file ) { %>
+    <link rel="stylesheet" type="text/css" href="/static/<%= file %>" /><% }); %>
+    <style type="text/css">
+      [ng-cloak] {
+        display: none;
+      }
+    </style>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular.min.js" crossorigin></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular-animate.min.js" crossorigin></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular-resource.min.js" crossorigin></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular-route.min.js" crossorigin></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular-touch.min.js" crossorigin></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular-aria.min.js" crossorigin></script>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', '<%= localConfig.GoogleAnalyticsId %>']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+
+    <!-- compiled JavaScript --><% scripts.forEach( function ( file ) { %>
+    <script type="text/javascript" src="/static/<%= file %>"></script><% }); %>
+  </head>
+  <body ng:controller="MainCtrl" ng:class="{loading:pendingRequests}">
+    <nav class="navbar navbar-default navbar-top" role="navigation">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" ng:click="showNav = !showNav">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/" role="banner">{{school.name}}</a>
+      </div>
+      <div class="navbar-collapse" collapse="!showNav">
+        <ul class="nav navbar-nav">
+          <li dropdown class="dropdown" ng:show="$storage.user.schedules.length">
+            <a dropdown-toggle class="dropdown-toggle">
+                My Schedules<b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li ng:repeat="schedule in $storage.user.schedules | orderBy:'term.start':true">
+                <a href="{{Routes.Schedule(school.fragment, schedule.term.fragment)}}">
+                  {{schedule.term.name}}
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li ng:show="$storage.user.name">
+            <a href="/settings">Settings</a>
+          </li>
+          <li ng:show="$storage.user.roles.registrar || $storage.user.roles.admin">
+            <a href="/registrar/student_interest">Student Interest</a>
+          </li>
+          <li ng:show="$storage.user.name">
+            <a ng:click="logout()">Logout</a>
+          </li>
+          <li ng:hide="$storage.user.name">
+            <a ng:click="login()">Login</a>
+          </li>
+          <li ng:hide="$storage.user.name">
+            <a ng:click="register()">Sign Up</a>
+          </li>
+        </ul>
+        <div class="quicksearch-container pull-right">
+          <form class="navbar-form" ngSubmit="search(quicksearch.term, quicksearch.course)" role="search">
+            <div class="input-group">
+              <select class="form-control input-sm" ng:model="quicksearch.term" ng:options="term.fragment as term.name for term in school.terms"></select>
+              <input class="form-control input-sm" type="text" ng:model="quicksearch.course" typeahead="cs as (cs.code + ': ' + cs.name) for cs in quicksearch(quicksearch.term, $viewValue)" typeahead-min-length="3" typeahead-wait-ms="100" typeahead-on-select="quicksearch.jump(quicksearch.term, quicksearch.course)"  typeahead-focus-first="false" placeholder="Quick Search" autofocus />
+              <div class="input-group-btn">
+                <button class="btn btn-primary input-sm" type="submit" ng:click="search(quicksearch.term, quicksearch.course)">
+                  <i class="glyphicon glyphicon-search"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </nav>
+    <div class="container" role="main">
+      <div ng:hide="navError" ng:view></div>
+      <div ng:show="navError" class="jumbotron">
+          <h1><span class="text-danger">Oops!</span></h1>
+          <p ng:switch="navError">
+            <span ng:switch:when="404">The page you are looking for was not found. Please check your spelling.</span>
+            <span ng:switch:when="403">You must <a ng:click="login()">sign in</a> to access this page.</span>
+            <span ng:switch:default>There was an error loading the page you requested. If trying again doesn't work, please contact us.</span>
+          </p>
+          <p>
+            <a class="btn btn-primary btn-lg" role="button" href="/">Home</a>
+            <a class="btn btn-warning btn-lg" role="button" ng:click="$window.history.back()">Back</a>
+          </p>
+      </div>
+    </div>
+    <footer class="main-footer" role="contentinfo">
+      <div class="container">
+        <p>Brought to you by <a href="http://www.fourthrune.com">Fourth Rune</a>.</p>
+        <p><small><a href="/terms">Terms of Service</a> &bull; <a href="/privacy">Privacy Policy</a> &bull; <a href="mailto:admin@schdl.net?subject=Schdl" ng-href="mailto:admin@schdl.net?subject={{::school.name}} Schdl" target="_blank">Contact Us</a></small></p>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,28 @@
+<span ng-show="termIsOver() &amp;&amp; {delete:true,official:true}[userStatus]">
+  <button ng-show="signedIn &amp;&amp; userStatus == 'delete'" ng-click="update('official')" class="btn btn-default btn-xs hidden-print">I took this course</button>
+  <span class="btn-group" ng-show="userStatus == 'official'"><button class="btn btn-primary btn-xs">I took this course</button><button ng-click="update('delete')" class="btn btn-primary btn-xs"><i class="hidden-print glyphicon glyphicon-trash"></i><span class="sr-only">Delete</span></button></span>
+  <button ng-hide="signedIn" ng-click="register()" class="btn btn-default btn-xs">I took this course</button>
+</span>
+<span ng-hide="termIsOver() &amp;&amp; {delete:true,official:true}[userStatus]">
+  <button ng:hide="signedIn" ng-click="register()" class="btn btn-xs btn-default hidden-print">
+    {{statuses.getText('delete', true)}}
+  </button>
+  <span ng:show="signedIn" dropdown class="dropdown">
+    <button dropdown-toggle class="dropdown-toggle btn btn-xs {{userStatus == 'delete' && 'btn-default hidden-print' || 'btn-primary'}}">
+      <i class="glyphicon glyphicon-{{statuses[userStatus].buttonIcon || statuses[userStatus].icon}}" ng:hide="statuses[userStatus].buttonIcon == 'none'"></i>
+      {{statuses.getText(userStatus, true)}}
+      <b class="caret hidden-print"></b>
+    </button>
+    <ul class="dropdown-menu">
+      <li ng-repeat="option in statuses" ng-hide="userStatus == option.id || (termIsOver() &amp;&amp; option.presentOnly)" tooltip="{{option.tooltip}}" tooltip-placement="right" tooltip-popup-delay="500">
+        <a ng-click="update(option.id)">
+          <i class="glyphicon glyphicon-{{option.icon}}"></i>
+          {{statuses.getText(option.id, false)}}</a>
+      </li>
+    </ul>
+  </span>
+  <span ng-hide="termIsOver()">
+    <small class="text-danger" ng:show="$root.school.fragment == 'brandeis' &amp;&amp; userStatus == 'official'"><i class="glyphicon glyphicon-exclamation-sign"></i> Don't forget to <strong>register in <a href="https://sage.brandeis.edu">SAGE</a></strong> with code {{registrationId}}.<span ng-show="isRestricted(status)"> A consent code from the instructor may be required.</span></small>
+    <small class="text-info" ng:show="$root.school.fragment == 'brandeis' &amp;&amp; userStatus == 'definitely'"><i class="glyphicon glyphicon-exclamation-sign"></i> <strong>Register in <a href="https://sage.brandeis.edu">SAGE</a></strong> with code {{registrationId}}.<span ng-show="isRestricted(status)"> A consent code from the instructor may be required.</span></small>
+  </span>
+</span>

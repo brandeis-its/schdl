@@ -1,0 +1,6 @@
+Hello, {{ user.name }}. Thank you for creating a
+{{ school.name }} Schdl account. The email address that you provided is
+{{ user.email[0] }}.
+
+To finish creating your account and sign in, go to https://{{ school.hostname[0] }}/verify?secret={{ secret }}
+This link will expire in 30 days.

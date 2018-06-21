@@ -1,0 +1,16 @@
+<ul class="breadcrumb">
+  <li><a href="{{Routes.School(school.fragment)}}">{{school.name}}</a></li>
+  <li><a href="{{Routes.Term(school.fragment, subject.term.fragment)}}">{{subject.term.name}}</a></li>
+  <li class="active">{{subject.name}}</li>
+</ul>
+<h2>{{subject.name}}</h2>
+<div ng:repeat="segment in subject.segments">
+  <h3 ng:show="segment.name">{{segment.name}}</h3>
+  <div ng:repeat="course in segment.courses">
+    <h5>{{course.code}}: <a href="{{Routes.Course(school.fragment, subject.term.fragment, course.fragment)}}">{{course.name}}</a>
+      <span ng:repeat="req in course.requirements" class="schdl-req" title="{{req.long}}">{{req.short}} </span>
+    </h5>
+    <div><i>{{course.description}}</i></div>
+  </div>
+</div>
+<p><a href="{{Routes.Term(school.fragment, subject.term.fragment)}}">Back to {{subject.term.name}}</a></p>

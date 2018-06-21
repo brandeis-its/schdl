@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /verify
+# Can't disallow API because it would block /api/ical from Google Calendar
+# Disallow: /api
+Disallow: /schedule
+Disallow: /settings

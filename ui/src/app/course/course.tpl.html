@@ -1,0 +1,37 @@
+<ul class="breadcrumb">
+  <li><a href="{{Routes.School(school.fragment)}}">{{school.name}}</a></li>
+  <li><a href="{{Routes.Term(school.fragment, course.term.fragment)}}">{{course.term.name}}</a></li>
+    <!--  <li><a href="{{Routes.Subject(school.fragment, course.term.fragment, course.subject.fragment)}}">{{course.subject.name}}</a></li> -->
+  <li class="active">{{course.name}}</li>
+</ul>
+<h3>{{course.name}} &bull; {{course.code}}
+<span ng:repeat="req in course.requirements" class="schdl-req" title="{{req.long}}">{{req.short}} </span>
+</h3>
+<div ng:show="course.subjects" class="course-subjects">
+  Listed in <span ng:repeat="subject in course.subjects"><span ng:show="$last &amp;&amp; !$first"> and </span><span ng:show="$middle">, </span><a href="{{Routes.Subject(school.fragment, course.term.fragment, subject.fragment)}}">{{subject.name}}</a></span>.
+</div>
+<div class="schdl-course-description" ng:show="course.description">{{course.description}}</div>
+<div ng:repeat="section in course.sections | orderBy:'section'" class="schdl-section">
+    <h4>Section {{section.section}}
+      <schdl-user-status signed-in="$storage.user.name" register="register" term="course.term.fragment" term-end="course.term.end" section="section.fragment" registration-id="section.registration_id" status="section.status"></schdl-user-status>
+    </h4>
+    <schdl-section-status status="section.status" status-text="section.status_text" enrolled="section.enrolled" limit="section.limit" waiting="section.waiting"></schdl-section-status>
+  <div class="schdl-instructors">
+    Instructors: {{ {0: 'TBD'}[section.instructors.length] }}
+    <span ng:repeat="instr in section.instructors"><a href="{{Routes.Instructor(school.fragment, instr.fragment)}}">{{instr.name}}</a>{{ {false: ', '}[$last] }}</span>
+  </div>
+  <div ng:repeat="time in section.times" class="schdl-course-time">
+    <span ng:show="time.type">{{time.type}}: </span>
+    {{ time.days | schdlDays }} {{time.start | schdlTime}} - {{time.end | schdlTime}}
+    <span ng:show="time.building || time.room">@ {{time.building}} {{time.room}}</span>
+  </div>
+  <div class="schdl-section-details" ng:show="section.details">{{section.details}}</div>
+  <div ng:show="section.books_url">
+    <a ng:href="{{section.books_url}}"> <i class="glyphicon glyphicon-book"></i> Books</a>
+  </div>
+</div>
+<h3 ng:show="course.other_terms.length">Also offered in:</h3>
+<div ng:repeat="c in course.other_terms | orderBy:'term.end':true">
+  <h4><a href="{{Routes.Course(school.fragment, c.term.fragment, c.fragment)}}">{{ c.term.name }}</a> <span ng:show="c.name != course.name">({{c.name}})</span></h4>
+</div>
+<!--<a href="{{Routes.Subject(school.fragment, course.term.fragment, course.subject.fragment)}}">Back to {{course.subject.name}}</a>-->

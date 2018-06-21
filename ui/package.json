@@ -1,0 +1,35 @@
+{
+  "author": "Eitan Mosenkis",
+  "name": "pyschdl",
+  "description": "Schdl.net UI",
+  "version": "0.0.1",
+  "homepage": "https://www.schdl.net",
+  "licenses": {
+    "type": "None",
+    "url": "https://www.fourthrune.com"
+  },
+  "bugs": "https://bitbucket.org/fourthrune/schdl-ui/issues",
+  "repository": {
+    "type": "git",
+    "url": "git@bibucket.org:/fourthrune/schdl-ui.git"
+  },
+  "dependencies": {
+    "bower": "^1.8.2"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-bump": "0.0.6",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-clean": "~0.4.1",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-jshint": "~0.4.3",
+    "grunt-contrib-less": "~0.9.0",
+    "grunt-contrib-uglify": "~0.2.0",
+    "grunt-contrib-watch": "~0.4.0",
+    "grunt-conventional-changelog": "~0.1.1",
+    "grunt-html2js": "~0.1.3",
+    "grunt-karma": "~0.5.0",
+    "grunt-ngmin": "0.0.2"
+  }
+}

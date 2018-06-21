@@ -1,0 +1,68 @@
+<div class="jumbotron" ng:hide="status == 'need_password'">
+  <div ng:switch="status">
+    <div ng:switch:when="expired">
+      <h1>The early bird catches the worm.</h1>
+      <p>Unfortunately, you're too late and this confirmation link has expired.
+        <span ng:switch="type">
+          <a ng:switch:when="new_user" ng:click="register()">Register again</a>
+          <a ng:switch:when="reset_password" ng:click="resetPasswd()">Reset your password again</a>
+          <a ng:switch:when="add_email" href="/settings">Try again</a>
+        </span>.
+      </p>
+    </div>
+    <div ng:switch:when="used">
+      <h1>This isn't the link you're looking for.</h1>
+      <p>This confirmation link has already been used.</p>
+    </div>
+    <div ng:switch:when="account_exists">
+      <h1>Oops!</h1>
+      <p>Another account already exists with your email address. Try <a ng:click="login()">signing in</a>.</p>
+    </div>
+    <div ng:switch:when="success">
+      <h1>You're all set!</h1>
+      <div ng:switch="type">
+        <p ng:switch:when="new_user">
+          Your account setup is complete. Please <a ng:click="login()">sign in</a> to begin using it.
+        </p>
+        <p ng:switch:when="reset_password">
+          Your password has been changed. Please <a ng:click="login()">sign in</a> with your new password.
+        </p>
+        <p ng:switch:when="add_email">
+          Your email address has been added to your account. To receive future emails at this address, go to <a href="/settings">Settings</a> and choose this address as your Primary Email Address.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a class="btn btn-primary" href="/">Home</a>
+  </div>
+</div>
+<div ng:show="status == 'need_password'">
+  <h1>Reset Password</h1>
+  <form ng:submit="doResetPasswd()" class="form-horizontal" role="form">
+    <div class="alert alert-danger" ng:show="doResetPasswd.failure">
+      <div ng:switch="doResetPasswd.failure">
+        <div ng:switch:when="nomatch">Passwords do not match.</div>
+        <div ng:switch:when="blank">You must enter a password.</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="password" class="col-sm-2 control-label">New Password</label>
+      <div class="col-sm-9">
+        <input id="password" type="password" class="form-control" ng:model="doResetPasswd.password" placeholder="New Password" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="password2" class="col-sm-2 control-label">Repeat Password</label>
+      <div class="col-sm-9">
+        <input id="password2" type="password" class="form-control" ng:model="doResetPasswd.password2" placeholder="Repeat Password" />
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-9 col-sm-offset-2">
+        <button class="btn btn-primary" ng:click="doResetPasswd()">Change Password</button>
+      </div>
+    </div>
+    <input type="submit" style="position: absolute; left: -9999px; z-index: -9999">
+  </form>
+</div>

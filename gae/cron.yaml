@@ -1,0 +1,4 @@
+cron:
+- description: "Brandeis import updates"
+  url: /api/import_update/brandeis
+  schedule: every 1 minutes from 00:00 to 23:59

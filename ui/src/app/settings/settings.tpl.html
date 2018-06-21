@@ -1,0 +1,135 @@
+<h1>Settings</h1>
+<form class="form-horizontal" role="form" ng-submit="updateName()">
+  <h3 class="text-info col-sm-9 col-sm-offset-3">Name
+    <small ng-switch="settings.nameResult">
+      <span ng-switch-when="success" class="text-success">
+        <i class="glyphicon glyphicon-ok"></i>
+        Saved
+      </span>
+      <span ng-switch-when="error" class="text-danger">
+        <i class="glyphicon glyphicon-warning-sign"></i>
+        Unable to Save
+      </span>
+    </small>
+  </h3>
+  <div class="form-group">
+    <label for="firstname" class="col-sm-3 control-label">First Name</label>
+    <div class="col-sm-9">
+      <input id="firstname" class="form-control" ng-model="settings.first" placeholder="First name" />
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="middlename" class="col-sm-3 control-label">Middle Name</label>
+    <div class="col-sm-9">
+      <input id="middlename" class="form-control" ng-model="settings.middle" placeholder="Middle name" />
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="lastname" class="col-sm-3 control-label">Last Name</label>
+    <div class="col-sm-9">
+      <input id="lastname" class="form-control" ng-model="settings.last" placeholder="Last name" />
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-9 col-sm-offset-3">
+      <button class="btn btn-primary form-control">Save</button>
+    </div>
+  </div>
+</form>
+<form class="form-horizontal" role="form" ng-submit="updateEmail()">
+  <h3 class="text-info col-sm-9 col-sm-offset-3">
+    Email Addresses
+    <small ng-switch="settings.emailResult">
+      <span ng-switch-when="success" class="text-success">
+        <i class="glyphicon glyphicon-ok"></i>
+        Saved
+      </span>
+      <span ng-switch-when="sent_verification" class="text-success">
+        <i class="glyphicon glyphicon-ok"></i>
+        An email has been sent to verify your new email address
+      </span>
+      <span ng-switch-when="email_in_use" class="text-danger">
+        <i class="glyphicon glyphicon-warning-sign"></i>
+        An account already exists with that email address.
+      </span>
+      <span ng-switch-when="error" class="text-danger">
+        <i class="glyphicon glyphicon-warning-sign"></i>
+        Unable to Save
+      </span>
+    </small>
+  </h3>
+  <div class="form-group">
+    <label for="email" class="col-sm-3 control-label">Primary Email Address</label>
+    <div class="col-sm-9">
+      <select ng-options="email for email in $storage.user.email" ng-model="settings.primaryEmail" class="form-control"></select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="addEmail" class="col-sm-3 control-label">Add Email Address</label>
+    <div class="col-sm-9">
+      <input id="addEmail" type="email" class="form-control" ng-model="settings.addEmail" placeholder="New email address" />
+    </div>
+  </div>
+  <div class="form-group" ng-show="$storage.user.email.length > 1">
+    <label class="col-sm-3 control-label">Delete Email Address</label>
+    <div class="col-sm-9">
+      <div ng-repeat="email in $storage.user.email | limitTo:1-$storage.user.email.length" class="checkbox">
+        <label>
+          <input type="checkbox" ng-model="settings.deleteEmail[email]"/>
+          {{email}}
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-9 col-sm-offset-3">
+      <button class="btn btn-primary form-control">Save</button>
+    </div>
+  </div>
+</form>
+<form class="form-horizontal" role="form" ng-submit="updatePassword()">
+  <h3 class="text-info col-sm-9 col-sm-offset-3">
+    Password
+    <small ng-switch="settings.passwordResult">
+      <span ng-switch-when="success" class="text-success">
+        <i class="glyphicon glyphicon-ok"></i>
+        Saved
+      </span>
+      <span ng-switch-when="password_incorrect" class="text-danger">
+        <i class="glyphicon glyphicon-warning-sign"></i>
+        Incorrect password
+      </span>
+      <span ng-switch-when="nomatch" class="text-danger">
+        <i class="glyphicon glyphicon-warning-sign"></i>
+        Passwords do not match
+      </span>
+      <span ng-switch-when="error" class="text-danger">
+        <i class="glyphicon glyphicon-warning-sign"></i>
+        Unable to Save
+      </span>
+    </small>
+  </h3>
+  <div class="form-group">
+    <label for="oldpwd" class="col-sm-3 control-label">Current Password</label>
+    <div class="col-sm-9">
+      <input id="oldpwd" type="password" class="form-control" ng-model="settings.oldpwd" placeholder="Current password" />
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="newpwd" class="col-sm-3 control-label">New Password</label>
+    <div class="col-sm-9">
+      <input id="newpwd" type="password" class="form-control" ng-model="settings.newpwd" placeholder="New password" />
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="repeatpwd" class="col-sm-3 control-label">Repeat New Password</label>
+    <div class="col-sm-9">
+      <input id="repeatpwd" type="password" class="form-control" ng-model="settings.repeatpwd" placeholder="Repeat New password" />
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-9 col-sm-offset-3">
+      <button class="btn btn-primary form-control">Save</button>
+    </div>
+  </div>
+</form>

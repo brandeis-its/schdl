@@ -1,0 +1,12 @@
+<ul class="breadcrumb">
+  <li><a href="{{Routes.School(school.fragment)}}">{{school.name}}</a></li>
+  <li class="active">{{term.name}}</li>
+</ul>
+<h2>{{term.name}}</h2>
+<div ng:repeat="col in term.subjects | columns:3:10" class="col-sm-4">
+  <div ng:repeat="subject in col">
+    <a href="{{Routes.Subject(school.fragment, term.fragment, subject.fragment)}}">{{subject.name}}</a>
+  </div>
+</div>
+<div class="clearfix"></div>
+<p><a href="{{Routes.School(school.fragment)}}">Back to {{school.name}}</a></p>

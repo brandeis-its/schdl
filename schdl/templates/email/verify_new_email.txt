@@ -1,0 +1,6 @@
+Hello, {{ user.name() }}. You requested to add the email address {{ email }} to
+your {{ school.name }} Schdl account.
+
+To verify this address and add it to your account, go to
+https://{{ school.hostname[0] }}/verify?secret={{ secret }}
+This link will expire in 30 days.
