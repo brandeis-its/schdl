@@ -8,8 +8,6 @@ TARGET="$( readlink -f "$1" )"
 
 cd "${DIR}"
 
-./gentmpl.sh -v
-
 cd ui
 
 grunt build compile

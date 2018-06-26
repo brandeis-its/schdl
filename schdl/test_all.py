@@ -9,7 +9,6 @@ from schdl import test_browse
 from schdl import test_ical
 #from schdl import test_model
 from schdl import test_schedules
-from schdl import test_seo
 from schdl import test_sessions
 from schdl import test_static
 from schdl import test_users
@@ -21,7 +20,6 @@ test_modules = (
     test_ical,
     # test_model,
     test_schedules,
-    test_seo,
     test_sessions,
     test_static,
     test_users,

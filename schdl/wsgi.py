@@ -11,7 +11,6 @@ from schdl import schedules
 from schdl import registrar
 from schdl import ical
 from schdl import recommender
-from schdl import seo  # import side-effect: applies middleware
 from schdl import updates
 from schdl import static
 
@@ -22,7 +21,6 @@ MODULES = (
     browse,
     schedules,
     ical,
-    seo,
     updates,
     registrar,
     recommender,

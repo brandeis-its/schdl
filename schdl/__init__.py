@@ -14,8 +14,6 @@ from flask.ext import pymongo
 from flask.ext import bcrypt
 from flask.ext import login
 
-from angular2tmpl import jinja2 as angular2tmpl_jinja2
-
 logging.basicConfig(level='INFO')
 
 LOGGER = logging.getLogger(__name__)
@@ -113,8 +111,6 @@ app.jinja_loader = jinja2.ChoiceLoader([
     app.jinja_loader,
     MyLoader(app.jinja_loader)
 ])
-
-app.jinja_env.undefined = angular2tmpl_jinja2.PermissiveUndefined
 
 
 @app.errorhandler(404)
