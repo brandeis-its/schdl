@@ -1,10 +1,13 @@
 #!/bin/bash
 
-if grep -qir 'red.?hat' /etc/issue then
+if egrep -qi 'red.?hat' /etc/issue; then
+    # Tested with RHEL 6
     DISTRO=redhat
-elif grep -qir 'ubuntu' /etc/issue then
+elif grep -qi 'ubuntu' /etc/issue; then
+    # Tested with Ubuntu 16.04
     DISTRO=ubuntu
-elif grep -qir 'debian' /etc/issue then
+elif grep -qi 'debian' /etc/issue; then
+    # Not tested
     DISTRO=debian
 else 
     echo 'Failed to detect Red Hat, Debian, or Ubuntu' >&2
@@ -21,8 +24,11 @@ gpgcheck=1
 enabled=1
 gpgkey=https://www.mongodb.org/static/pgp/server-4.0.asc
 EOF
-    sudo sh -c 'wget -qO- http://people.redhat.com/bkabrda/scl_python27.repo >> /etc/yum.repos.d/scl.repo'
-    sudo yum install python27
+    # RHEL 6 doesn't have python2.7
+    if [[ ! -e /opt/rh/python27/enable ]]; then
+        sudo sh -c 'wget -qO- http://people.redhat.com/bkabrda/scl_python27.repo >> /etc/yum.repos.d/scl.repo'
+        sudo yum install python27
+    fi
     . /opt/rh/python27/enable
     sudo yum -y install nodejs mongodb-org-server mongodb-org python-virtualenv
     sudo yum -y groupinstall 'Development Tools'
