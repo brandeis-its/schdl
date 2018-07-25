@@ -6,11 +6,8 @@ if egrep -qi 'red.?hat' /etc/issue; then
 elif grep -qi 'ubuntu' /etc/issue; then
     # Tested with Ubuntu 16.04
     DISTRO=ubuntu
-elif grep -qi 'debian' /etc/issue; then
-    # Not tested
-    DISTRO=debian
 else 
-    echo 'Failed to detect Red Hat, Debian, or Ubuntu' >&2
+    echo 'Failed to detect Red Hat or Ubuntu' >&2
     exit 1
 fi
 
@@ -35,7 +32,7 @@ EOF
     sudo semanage port -a -t mongod_port_t -p tcp 27017
     sudo service mongod start
 else
-    sudo ${INSTALL_CMD} build-essential npm mongodb
+    sudo apt-get --assume-yes install build-essential npm mongodb
     sudo service mongodb start
 fi
 
