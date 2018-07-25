@@ -4,7 +4,7 @@ if egrep -qi 'red.?hat' /etc/issue; then
     # Tested with RHEL 6
     DISTRO=redhat
 elif grep -qi 'ubuntu' /etc/issue; then
-    # Tested with Ubuntu 16.04
+    # Tested with Ubuntu 18.04
     DISTRO=ubuntu
 else 
     echo 'Failed to detect Red Hat or Ubuntu' >&2
@@ -32,7 +32,7 @@ EOF
     sudo semanage port -a -t mongod_port_t -p tcp 27017
     sudo service mongod start
 else
-    sudo apt-get --assume-yes install build-essential npm mongodb
+    sudo apt-get --assume-yes install build-essential npm mongodb python-virtualenv python-dev
     sudo service mongodb start
 fi
 
