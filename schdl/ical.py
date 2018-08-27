@@ -3,12 +3,15 @@ from __future__ import (division, absolute_import, print_function,
 
 import bisect
 import datetime
+import hashlib
 import io
 import logging
 
 import flask
 import icalendar
 import pytz
+
+from flask import json
 
 from schdl import app
 from schdl import mongo
@@ -69,7 +72,16 @@ def ical(school, secret):
             if sect['user_status'] not in ('instructor', 'official'):
                 continue
             for time in sect['times']:
-                cal.add_component(makeEvent(start, end, sect, time))
+                sha1 = hashlib.sha1()
+                sha1.update(json.dumps(dict(
+                    school=school['fragment'],
+                    user=str(user['_id']),
+                    start=start,
+                    end=end,
+                    sect=sect,
+                    time=time)))
+                uid = '%s@%s' % (sha1.hexdigest(), flask.request.host)
+                cal.add_component(makeEvent(start, end, sect, time, uid))
     filename = '%s - %s.ics' % (user.school['name'], user.name())
     response = flask.Response(
         response=cal.to_ical(),
@@ -81,8 +93,9 @@ def ical(school, secret):
     return response
 
 
-def makeEvent(term_start, term_end, section, meeting_time):
+def makeEvent(term_start, term_end, section, meeting_time, uid):
     event = icalendar.Event()
+    event.add('uid', uid)
     event.add('summary',
               '%s %s' % (section['course_code'], section['section']))
     first_day = firstOccurrence(term_start, meeting_time['days'])

@@ -3,6 +3,7 @@ from __future__ import (division, absolute_import, print_function,
 
 import contextlib
 
+import bson
 import mongomock
 from flask.ext import pymongo
 
@@ -62,6 +63,7 @@ class User(object):
     @staticmethod
     def make():
         user = {
+            '_id': bson.ObjectId('314f2aa95c17276478531ffb'),
             'id': 103,
             'first': 'John',
             'middle': 'Q.',
