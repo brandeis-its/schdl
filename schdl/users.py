@@ -5,10 +5,9 @@ import datetime
 import logging
 
 import flask
+import flask_login
 import flask_mail
 import pymongo
-
-from flask.ext import login
 
 from schdl import app
 from schdl import mongo
@@ -54,8 +53,8 @@ def addInstructorCourses(c, user, term=None):
 @routes.add('/api/user', methods=['GET'])
 def current_user():
     # TODO(eitan): optimize!
-    user = login.current_user
-    if user.is_anonymous():
+    user = flask_login.current_user
+    if user.is_anonymous:
         return 'null'
     c = mongo.SchoolCollections(user.school['fragment'])
     addInstructorCourses(c, user)
@@ -72,9 +71,9 @@ def current_user():
 
 
 @routes.add('/api/user', methods=['POST'])
-@login.login_required
+@flask_login.login_required
 def update_user():
-    user = login.current_user
+    user = flask_login.current_user
     c = mongo.SchoolCollections(user.school['fragment'])
     update = {'$set': {}}
     request = flask.request.json
@@ -152,7 +151,7 @@ def update_user():
 @routes.add('/api/user/<school>', methods=['POST'])
 def register(school):
     # If logged in, just return current user
-    if not login.current_user.is_anonymous():
+    if not flask_login.current_user.is_anonymous:
         return current_user()
     request = flask.request.json
     school = app.mongo.db.schools.find_one_or_404(

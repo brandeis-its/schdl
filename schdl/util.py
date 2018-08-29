@@ -64,12 +64,15 @@ class User(object):
     def name(self):
         return name(self.user) or 'Anonymous'
 
+    @property
     def is_active(self):
         return True
 
+    @property
     def is_authenticated(self):
         return True
 
+    @property
     def is_anonymous(self):
         return False
 

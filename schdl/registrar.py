@@ -7,7 +7,7 @@ import io
 import json
 import logging
 
-from flask.ext import login
+import flask_login
 
 from schdl import app
 from schdl import mongo
@@ -19,9 +19,9 @@ LOGGER = logging.getLogger(__name__)
 routes = util.RouteSet()
 
 
-@login.login_required
+@flask_login.login_required
 def student_interest_data(school, term):
-    if not login.current_user.hasPermissionTo('view', 'student_interest'):
+    if not flask_login.current_user.hasPermissionTo('view', 'student_interest'):
         return flask.jsonify(reason='permission_denied'), 403
     app.mongo.db.schools.find_one_or_404({'fragment': school},
                                          {'_id': True})
@@ -81,8 +81,8 @@ def student_interest_data(school, term):
         }},
         # Sort for output
         {'$sort': {'section': 1}},
-    ])['result']
-    sections = c.course.aggregate([
+    ])
+    sections = list(c.course.aggregate([
         # Filter by term
         {'$match': {'term': term['id']}},
         # Drop unneeded data
@@ -106,7 +106,7 @@ def student_interest_data(school, term):
         }},
         # Sort for output
         {'$sort': {'id': 1}},
-    ])['result']
+    ]))
     # Merge join
     cur_count = {'section': None}
     count_iter = iter(counts)
@@ -172,5 +172,8 @@ def student_interest_csv(school, term):
         for row in data:
             yield row_to_csv(row)
     data = student_interest_data(school, term)
+    if type(data) != list:
+        # Must be some sort of error response
+        return data
     response = flask.Response(generator(data), mimetype='text/csv')
     return response

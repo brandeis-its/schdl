@@ -7,12 +7,12 @@ import logging.handlers
 import os
 
 import flask
+import flask_bcrypt
+import flask_login
 import flask_mail
+import flask_pymongo
 import jinja2
 
-from flask.ext import pymongo
-from flask.ext import bcrypt
-from flask.ext import login
 
 logging.basicConfig(level='INFO')
 
@@ -75,16 +75,16 @@ except OSError:
 if not os.path.isdir(app.static_folder):
     raise IOError('Static folder is missing!')
 
-app.login_manager = login.LoginManager()
+app.login_manager = flask_login.LoginManager()
 app.mail = flask_mail.Mail()
 
 app.config.from_object('schdl.baseconfig')
 app.config.from_pyfile('../schdl.cfg')
-if 'MONGO_TEST_METHOD' in app.config:
+if app.config.get('TESTING'):
     app.mongo = None
 else:
-    app.mongo = pymongo.PyMongo(app)
-app.bcrypt = bcrypt.Bcrypt(app)
+    app.mongo = flask_pymongo.PyMongo(app)
+app.bcrypt = flask_bcrypt.Bcrypt(app)
 app.login_manager.init_app(app)
 app.mail.init_app(app)
 

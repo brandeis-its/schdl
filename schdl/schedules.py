@@ -4,9 +4,9 @@ from __future__ import (division, absolute_import, print_function,
 import datetime
 
 import flask
-from flask import request
+import flask_login
 
-from flask.ext import login
+from flask import request
 
 from schdl import app
 from schdl import mongo
@@ -20,10 +20,10 @@ routes = util.RouteSet()
 
 @routes.add('/api/schedules/<school>/<term>/<section>',
             methods=['PUT', 'DELETE'])
-@login.login_required
+@flask_login.login_required
 def update_schedule(school, term, section):
     section = util.decode_section_id(section)
-    user = login.current_user
+    user = flask_login.current_user
     app.mongo.db.schools.find_one_or_404({'fragment': school},
                                          {'_id': True})
     c = mongo.SchoolCollections(school)

@@ -7,7 +7,7 @@ import unittest
 from schdl import app
 from schdl import test_browse
 from schdl import test_ical
-#from schdl import test_model
+from schdl import test_registrar
 from schdl import test_schedules
 from schdl import test_sessions
 from schdl import test_static
@@ -18,7 +18,7 @@ suite = unittest.TestSuite()
 test_modules = (
     test_browse,
     test_ical,
-    # test_model,
+    test_registrar,
     test_schedules,
     test_sessions,
     test_static,

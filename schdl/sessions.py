@@ -3,9 +3,10 @@ from __future__ import (division, absolute_import, print_function,
 
 import datetime
 
+import flask_login
+
 from flask import jsonify
 from flask import request
-from flask.ext import login
 from bson import objectid
 
 from schdl import app
@@ -48,7 +49,7 @@ def user_login(school):
     if user is None:
         return jsonify(reason='noaccount'), 403
     if app.bcrypt.check_password_hash(user['passhash'], password):
-        if login.login_user(util.User(user, school)):
+        if flask_login.login_user(util.User(user, school)):
             c.user.update({
                 '_id': user['_id']
             }, {
@@ -63,5 +64,5 @@ def user_login(school):
 
 @routes.add('/api/session', methods=['DELETE'])
 def logout():
-    login.logout_user()
+    flask_login.logout_user()
     return jsonify(status='ok')

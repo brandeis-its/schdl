@@ -42,10 +42,10 @@ class TestICal(unittest.TestCase):
             'DTSTART;TZID=America/New_York;VALUE=DATE-TIME:20130121T100000\r\n'
             'DTEND;TZID=America/New_York;VALUE=DATE-TIME:20130121T105000\r\n'
             'DTSTAMP;VALUE=DATE-TIME:20120101T000000Z\r\n'
-            'UID:bab0a1578f90981ad568deed544821979d656cb4@localhost\r\n'
+            'UID:cb4970c664d67c55f2193befef96a70e5956c6d7@localhost\r\n'
+            'RRULE:FREQ=WEEKLY;UNTIL=20130422T000000;BYDAY=MO,WE\r\n'
             'CATEGORIES:CLASS\r\n'
             'DESCRIPTION:Introductory Basket Weaving\\n\\nInstructor: Tim J. Hickey\r\n'
-            'RRULE:FREQ=WEEKLY;UNTIL=20130422T000000;BYDAY=MO,WE\r\n'
             'END:VEVENT\r\n'
             'END:VCALENDAR\r\n'
         )

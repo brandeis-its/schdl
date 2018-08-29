@@ -4,15 +4,14 @@ from __future__ import (division, absolute_import, print_function,
 import contextlib
 
 import bson
-import mongomock
-from flask.ext import pymongo
+import flask_pymongo
 
 from schdl import app
 from schdl import mongo
 
 
 class Database(object):
-    def __init__(self):
+    def __init__(self, user_roles=[]):
         self.school = School.make()
         c = mongo.SchoolCollections(self.school['fragment'])
         self.term = Term.make()
@@ -26,7 +25,7 @@ class Database(object):
                                                  course=self.course,
                                                  instructor=self.instructor)
         self.course['sections'] = [self.course_section]
-        self.user = User.make()
+        self.user = User.make(roles=user_roles)
         self.schedule = Schedule.make(self.school, self.term,
                                       self.course_section)
         self.user['schedules'] = [self.schedule]
@@ -39,29 +38,25 @@ class Database(object):
 
     @classmethod
     @contextlib.contextmanager
-    def WithTestData(cls):
-        assert app.config['MONGO_TEST_METHOD'] in ('mongomock', 'live')
+    def WithTestData(cls, **kwargs):
         prev_value = app.mongo
-        if app.config['MONGO_TEST_METHOD'] == 'mongomock':
-            app.mongo = mongomock.Connection()
-        else:  # app.config['MONGO_TEST_METHOD'] == 'live'
-            app.mongo = TestMongo()
-            app.mongo.db.connection.drop_database(app.mongo.db)
+        app.mongo = TestMongo()
+        app.mongo.db.client.drop_database(app.mongo.db)
         try:
-            yield cls()
+            yield cls(**kwargs)
         finally:
             app.mongo = prev_value
 
 
 class TestMongo(object):
     def __init__(self):
-        client = pymongo.MongoClient()
+        client = flask_pymongo.wrappers.MongoClient()
         self.db = client['test_' + app.name]
 
 
 class User(object):
     @staticmethod
-    def make():
+    def make(roles=[]):
         user = {
             '_id': bson.ObjectId('314f2aa95c17276478531ffb'),
             'id': 103,
@@ -73,7 +68,7 @@ class User(object):
                         'N16e2nvboEk.8bQtru',
             'created': '2013-04-01',
             'clearpw': 'jqpublic',
-            'roles': [],
+            'roles': roles,
             'secret': 'notagoodsecret',
         }
         return user

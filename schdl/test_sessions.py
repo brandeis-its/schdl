@@ -4,7 +4,7 @@ from __future__ import (division, absolute_import, print_function,
 import json
 import unittest
 
-from flask.ext import login
+import flask_login
 
 from schdl import mongo
 from schdl import sessions
@@ -84,11 +84,11 @@ class TestRoutes(unittest.TestCase):
                 },
                 json.loads(response.data))
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(login.current_user['id'], data.user['id'])
-        self.assertTrue(login.current_user.is_active())
-        self.assertTrue(login.current_user.is_authenticated())
-        self.assertFalse(login.current_user.is_anonymous())
-        self.assertIsNotNone(login.current_user.get_id())
+        self.assertEqual(flask_login.current_user['id'], data.user['id'])
+        self.assertTrue(flask_login.current_user.is_active)
+        self.assertTrue(flask_login.current_user.is_authenticated)
+        self.assertFalse(flask_login.current_user.is_anonymous)
+        self.assertIsNotNone(flask_login.current_user.get_id())
 
     def test_login_bad_pw(self):
         with test_data.Database.WithTestData() as data:
@@ -111,10 +111,10 @@ class TestRoutes(unittest.TestCase):
             response = self.app.delete('/api/session')
         self.assertEqual(json.loads(response.data), dict(status='ok'))
         self.assertEqual(response.status_code, 200)
-        self.assertFalse(login.current_user.is_active())
-        self.assertFalse(login.current_user.is_authenticated())
-        self.assertTrue(login.current_user.is_anonymous())
-        self.assertIsNone(login.current_user.get_id())
+        self.assertFalse(flask_login.current_user.is_active)
+        self.assertFalse(flask_login.current_user.is_authenticated)
+        self.assertTrue(flask_login.current_user.is_anonymous)
+        self.assertIsNone(flask_login.current_user.get_id())
 
 
 if __name__ == '__main__':
