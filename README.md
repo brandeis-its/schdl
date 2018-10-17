@@ -60,7 +60,7 @@ automatic_scaling:
     min_num_instances: 2
     max_num_instances: 3
     cpu_utilization:
-    target_utilization: 0.6
+        target_utilization: 0.6
 
 resources:
     cpu: 1
