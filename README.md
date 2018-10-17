@@ -122,4 +122,6 @@ and choose a region that the app will run in.
 
 ```shell
 gcloud app deploy
+# When doing first-time deployment or if you've changed cron.yaml:
+gcloud app deploy cron.yaml
 ```
