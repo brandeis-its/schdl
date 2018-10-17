@@ -14,7 +14,7 @@ cd schdl
 ./setup.sh
 ```
 
-## Enter the dev environment (do this every time you want to build 
+## Enter the dev environment (do this every time you want to build
 
 ```shell
 cd $HOME/schdl
@@ -32,42 +32,59 @@ bin/ensureIndices.py
 ## Copy the following into `~/schdl/gae/app.yaml`
 
 ```yaml
-runtime: python 
-env: flex 
+runtime: python
+env: flex
 
-runtime_config: 
-   python_version: 2 
+runtime_config:
+    python_version: 2
 
-entrypoint: gunicorn -c gunicorn.conf.py -b :$PORT schdl.wsgi:app 
+entrypoint: gunicorn -c gunicorn.conf.py -b :$PORT schdl.wsgi:app
 
-env_variables: 
-   FLASK_MAIL_PASSWORD: 'PASSWORD' 
-   FLASK_MAIL_USERNAME: 'USERNAME' 
-   FLASK_SECRET_KEY: 'SECRET' 
-   SCHDL_DB_URI: 'MONGODB_URI'
+env_variables:
+    FLASK_MAIL_SERVER: 'MAIL_SERVER'
+    FLASK_MAIL_PORT: 'MAIL_PORT'
+    FLASK_MAIL_USE_TLS: 'MAIL_TLS_ENABLED'
+    FLASK_MAIL_PASSWORD: 'PASSWORD'
+    FLASK_MAIL_USERNAME: 'USERNAME'
+    FLASK_MAIL_SENDER: 'MAIL_SENDER'
+    FLASK_SECRET_KEY: 'SECRET'
+    SCHDL_DB_URI: 'MONGODB_URI'
+    SCHDL_GCS_BUCKET: 'GCS_BUCKET'
+    SCHDL_EMAIL_ERRORS_TO: 'ERRORS_EMAIL'
 
-skip_files: 
-   - ^\.git/.* 
-   - ^venv/.* 
+skip_files:
+    - ^\.git/.*
+    - ^venv/.*
 
-automatic_scaling: 
- min_num_instances: 2 
- max_num_instances: 3 
- cpu_utilization: 
-   target_utilization: 0.6 
+automatic_scaling:
+    min_num_instances: 2
+    max_num_instances: 3
+    cpu_utilization:
+    target_utilization: 0.6
 
-resources: 
-   cpu: 1 
-   memory_gb: 1.5
+resources:
+    cpu: 1
+    memory_gb: 1.5
 
 ```
 
+- Replace `MAIL_SERVER` with your SMTP server.
+- Replace `MAIL_PORT` with your SMTP port (this must not be a standard SMTP port)
+- Replace `MAIL_TLS_ENABLED` with 'true' or 'false'
 - Replace `PASSWORD` with your mail server password.
 - Replace `USERNAME` with your mail server username.
-- Replace `FLASK_SECRET_KEY` with a random string of about 30 characters. This is used to sign user sessions. Changing it and redeploying will force log out all users.
+- Replace `MAIL_SENDER` with the `From` address to be used for emails sent by the app.
+- Replace `SECRET` with a random string of about 30 characters. This is used to
+  sign user sessions. Changing it and redeploying will force log out all users.
 - Replace `MONGODB_URI` with the MongoDB connection URI.
+- Replace `GCS_BUCKET` with the name of the Google Cloud Storage bucket that
+  will be used to store course catalog snapshots and updates.
+- Replace `EMAIL_ERRORS_TO` with a space-separated list of email addresses that
+  will be emailed anytime an error occurs (this can be omitted or left blank to
+  not send a message for every error).
 
-Important: Keep your app.yaml safe - it's stored outside of git because it contains your authentication credentials and secret key.
+Important: Keep your app.yaml safe - it's stored outside of git because it
+contains your authentication credentials and secret key.
 
 ## Build the UI and prepare a deployment directory
 
@@ -78,7 +95,9 @@ mkdir -p ~/schdl-deploy
 
 # Deploy the version in the schdl-deploy directory to App Engine
 
-Before the first time you'll do this, you'll need to first open the App Engine section of the Google Cloud Console, create a Python Flexible environment app, and choose a region that the app will run in.
+Before the first time you'll do this, you'll need to first open the App Engine
+section of the Google Cloud Console, create a Python Flexible environment app,
+and choose a region that the app will run in.
 
 ```shell
 gcloud app deploy
