@@ -89,11 +89,32 @@ contains your authentication credentials and secret key.
 ## Build the UI and prepare a deployment directory
 
 ```shell
-mkdir -p ~/schdl-deploy
 ./build.sh ~/schdl-deploy
 ```
 
-# Deploy the version in the schdl-deploy directory to App Engine
+## Enter the prod-like deployment environemtn
+
+WARNING: Commands run this way will impact the production database and Cloud
+Storage configured in `app.yaml`.
+
+```shell
+cd ~/schdl
+. venv/bin/activate
+cd ~/schdl-deploy
+. prod.env
+```
+
+You can now run scripts from the `bin` directory:
+
+- `devServer.py` to run a development server backed by the prod database
+  (append `?force_host=prod-host.name` to your URL when opening this in your
+  browser to indicate the correct school to use).
+- `setAPIKey.py` to update the API key used to publish data updates.
+- `generateSnapshot.py` to generate a snapshot file, which can then be uploaded
+  to Cloud Storage in place of the latest snapshot in case the snapshot somehow
+  gets corrupted.
+
+## Deploy the version in the schdl-deploy directory to App Engine
 
 Before the first time you'll do this, you'll need to first open the App Engine
 section of the Google Cloud Console, create a Python Flexible environment app,

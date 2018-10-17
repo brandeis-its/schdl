@@ -27,12 +27,12 @@ EOF
         sudo yum install python27
     fi
     . /opt/rh/python27/enable
-    sudo yum -y install nodejs mongodb-org-server mongodb-org python-virtualenv
+    sudo yum -y install nodejs mongodb-org-server mongodb-org python-virtualenv ruby
     sudo yum -y groupinstall 'Development Tools'
     sudo semanage port -a -t mongod_port_t -p tcp 27017
     sudo service mongod start
 else
-    sudo apt-get --assume-yes install build-essential npm mongodb python-virtualenv python-dev
+    sudo apt-get --assume-yes install build-essential npm mongodb python-virtualenv python-dev ruby
     sudo service mongodb start
 fi
 
@@ -49,8 +49,7 @@ npm install
 npm install -g grunt-cli bower
 bower install
 cd ..
-mkdir ~/schdl-bin
-./build.sh ~/schdl-bin
+./build.sh ~/schdl-deploy
 
 # bin/addSchool.py ...
 # bin/ensureIndices.py

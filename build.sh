@@ -6,6 +6,7 @@ set -o pipefail
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 TARGET="$( readlink -f "$1" )"
 
+mkdir -p "${TARGET}"
 cd "${DIR}"
 
 cd ui

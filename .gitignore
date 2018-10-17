@@ -7,4 +7,3 @@ service-account.json
 schdl/templates/generated
 schdl/ui
 venv
-prod.env
