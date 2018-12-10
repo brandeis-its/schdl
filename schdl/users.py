@@ -75,7 +75,7 @@ def current_user():
 def update_user():
     user = flask_login.current_user
     c = mongo.SchoolCollections(user.school['fragment'])
-    update = {'$set': {}}
+    update = {}
     request = flask.request.json
     does_something = False
     for part in ('first', 'middle', 'last'):
@@ -83,6 +83,7 @@ def update_user():
             if not isinstance(request[part], unicode):
                 raise ValueError('Invalid type for request arg %s' % part)
             does_something = True
+            update.setdefault('$set', {})
             update['$set'][part] = request[part]
     if 'add_email' in request and isinstance(request['add_email'], unicode):
         email_in_use = c.user.find_one({'email': request['add_email']},
@@ -113,7 +114,6 @@ def update_user():
         )
         app.mail.send(msg)
         does_something = True
-        # TODO(eitan): generate verification and send email
     if ('primary_email' in request
             and request['primary_email'] != user['email'][0]):
         # Don't allow deleting former primary address, to match semantics of
@@ -125,6 +125,7 @@ def update_user():
         new_emails = user['email'][0:1] + new_emails
         new_emails.remove(request['primary_email'])
         new_emails = [request['primary_email']] + new_emails
+        update.setdefault('$set', {})
         update['$set']['email'] = new_emails
         does_something = True
     elif 'delete_email' in request:
@@ -136,13 +137,15 @@ def update_user():
     if 'old_password' in request and 'new_password' in request:
         if app.bcrypt.check_password_hash(user['passhash'],
                                           request['old_password']):
+            update.setdefault('$set', {})
             update['$set']['passhash'] = app.bcrypt.generate_password_hash(
                 request['new_password'])
             does_something = True
         else:
             return flask.jsonify(status='password_incorrect'), 403
     if does_something:
-        c.user.update({'_id': user['_id']}, update, w=1)
+        if update:
+            c.user.update({'_id': user['_id']}, update, w=1)
         return flask.jsonify(status='success')
     else:
         return flask.jsonify(status='noop')
